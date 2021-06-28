@@ -85,6 +85,18 @@ const Select = ({ setSkip }) => {
     if (option) getCountriesRegion(option);
   }, [option, getCountriesRegion]);
 
+  useEffect(() => {
+    const fn = (e) => {
+      if (showItems) {
+        const atrr = e.target.getAttribute('data-show');
+        if (atrr !== 'select') setShowItems(false);
+      }
+    };
+    document.addEventListener('click', fn);
+    return () => {
+      document.removeEventListener('click', fn);
+    };
+  }, [showItems]);
   const handleClick = () => setShowItems(!showItems);
   const handleOptionClick = (region) => {
     setSkip(0);
@@ -103,7 +115,7 @@ const Select = ({ setSkip }) => {
         className={!showItems ? 'fas fa-chevron-down' : 'fas fa-chevron-up'}
       ></I>
       {showItems && (
-        <Ul>
+        <Ul data-show="select">
           <Li onClick={() => handleOptionClick('all')}>All</Li>
           <Li onClick={() => handleOptionClick('africa')}>Africa</Li>
           <Li onClick={() => handleOptionClick('americas')}>America</Li>
