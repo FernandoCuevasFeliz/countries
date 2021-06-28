@@ -1,14 +1,18 @@
 import React, { useCallback, useReducer } from 'react';
-import formatNumbers from '../../helpers/formatNambers';
 
-import { GET_COUNTRIES, GET_COUNTRY } from '../types';
+import {
+  CLEAN_COUNTRIES,
+  CLEAN_COUNTRY,
+  GET_COUNTRIES,
+  GET_COUNTRY,
+} from '../types';
 import CountryContext from './CountryContext';
 import CountryReducer from './CountryReducer';
 
 const URI = 'https://restcountries.eu/rest/v2/';
 
 const initialState = {
-  countries: [],
+  countries: null,
   countrySelected: null,
 };
 
@@ -27,17 +31,61 @@ const CountryProvider = ({ children }) => {
   const getCountries = useCallback(async () => {
     const countries = await getData(URI + 'all');
     const arr = [];
-    for (let i = 0; i < 20; i++) {
-      countries[i].population = formatNumbers(countries[i].population);
-      arr.push(countries[i]);
+    for (let i = 0; i < countries.length; i += 12) {
+      arr.push(countries.slice(i, i + 12));
     }
-    console.log(arr);
+
     dispatch({ type: GET_COUNTRIES, payload: arr });
   }, []);
-  const getCountry = async (code) => {
+  const getCountry = useCallback(async (code) => {
     const country = await getData(URI + 'alpha/' + code);
     dispatch({ type: GET_COUNTRY, payload: country });
+  }, []);
+
+  const resetCountrySelected = () => {
+    dispatch({ type: CLEAN_COUNTRY, payload: null });
   };
+
+  const resetCountries = () => {
+    dispatch({ type: CLEAN_COUNTRIES, payload: null });
+  };
+
+  const getCountriesRegion = useCallback(
+    async (region) => {
+      if (region === 'all') return await getCountries();
+      const _region = await getData(URI + 'region/' + region);
+      const arr = [];
+      for (let i = 0; i < _region.length; i += 12) {
+        arr.push(_region.slice(i, i + 12));
+      }
+      dispatch({ type: GET_COUNTRIES, payload: arr });
+    },
+    [getCountries]
+  );
+
+  const getCountriesName = useCallback(
+    async (name) => {
+      if (name.trim()) {
+        const countries = await getData(URI + 'name/' + name);
+
+        if (countries.status) {
+          dispatch({ type: GET_COUNTRIES, payload: [] });
+          return;
+        }
+
+        let arr = [];
+
+        for (let i = 0; i < countries?.length; i += 12) {
+          arr.push(countries.slice(i, i + 12));
+        }
+
+        dispatch({ type: GET_COUNTRIES, payload: arr });
+        return;
+      }
+      await getCountries();
+    },
+    [getCountries]
+  );
 
   return (
     <CountryContext.Provider
@@ -46,6 +94,10 @@ const CountryProvider = ({ children }) => {
         countrySelected: state.countrySelected,
         getCountries,
         getCountry,
+        getCountriesRegion,
+        getCountriesName,
+        resetCountrySelected,
+        resetCountries,
       }}
     >
       {children}

@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ListCountries from '../molecules/ListCountries';
 import Search from '../molecules/Search';
 
 const Main = () => {
+  const [skip, setSkip] = useState(0);
   return (
     <>
-      <Search />
-      <ListCountries />
+      <Search setSkip={setSkip} />
+      <ListCountries skip={skip} setSkip={setSkip} />
     </>
   );
 };

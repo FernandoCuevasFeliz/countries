@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import CountryContext from '../../context/Country/CountryContext';
 
-const Div = styled.div`
+const Form = styled.form`
   display: inline-block;
   background-color: ${({ theme }) => theme.bgCards};
 
@@ -34,11 +35,29 @@ const MyInput = styled.input`
 `;
 
 const Input = () => {
+  const { getCountriesName } = useContext(CountryContext);
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    getCountriesName(name.toLowerCase());
+  }, [name, getCountriesName]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+  const handleChange = (e) => {
+    setName(e.target.value);
+  };
   return (
-    <Div>
+    <Form onSubmit={handleSubmit}>
       <I className="fas fa-search"></I>
-      <MyInput type="text" placeholder="Search for a country..." />
-    </Div>
+      <MyInput
+        type="text"
+        placeholder="Search for a country..."
+        value={name}
+        onChange={handleChange}
+      />
+    </Form>
   );
 };
 

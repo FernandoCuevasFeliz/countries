@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Main from '../orgnanisms/Main';
 
 const Div = styled.div`
-  width: 95%;
+  width: 90%;
   margin-left: auto;
   margin-right: auto;
   @media screen and (min-width: 768px) {

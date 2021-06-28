@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import CountryContext from '../../context/Country/CountryContext';
 
 const Div = styled.div`
   position: relative;
@@ -75,12 +76,20 @@ const Li = styled.li`
   }
 `;
 
-const Select = () => {
+const Select = ({ setSkip }) => {
+  const { getCountriesRegion } = useContext(CountryContext);
   const [option, setOption] = useState(null);
   const [showItems, setShowItems] = useState(false);
 
+  useEffect(() => {
+    if (option) getCountriesRegion(option);
+  }, [option, getCountriesRegion]);
+
   const handleClick = () => setShowItems(!showItems);
-  const handleOptionClick = (region) => setOption(region);
+  const handleOptionClick = (region) => {
+    setSkip(0);
+    setOption(region);
+  };
   return (
     <Div onClick={handleClick}>
       <P>
@@ -95,12 +104,12 @@ const Select = () => {
       ></I>
       {showItems && (
         <Ul>
+          <Li onClick={() => handleOptionClick('all')}>All</Li>
           <Li onClick={() => handleOptionClick('africa')}>Africa</Li>
           <Li onClick={() => handleOptionClick('americas')}>America</Li>
           <Li onClick={() => handleOptionClick('asia')}>Asia</Li>
           <Li onClick={() => handleOptionClick('europe')}>Europe</Li>
           <Li onClick={() => handleOptionClick('oceania')}>Oceania</Li>
-          <Li onClick={() => handleOptionClick('all')}>All</Li>
         </Ul>
       )}
     </Div>

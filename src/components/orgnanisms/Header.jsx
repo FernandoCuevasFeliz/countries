@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import ThemesContext from '../../context/Themes/ThemesContext';
@@ -20,7 +21,7 @@ const Nav = styled.nav`
   justify-content: space-between;
   align-items: center;
 
-  width: 95%;
+  width: 94%;
   margin: auto;
   @media screen and (min-width: 768px) {
     width: 90%;
@@ -29,6 +30,7 @@ const Nav = styled.nav`
 
 const H1 = styled.h1`
   font-size: 18px;
+  cursor: pointer;
 `;
 
 const Button = styled.button`
@@ -45,12 +47,13 @@ const Button = styled.button`
 `;
 
 const Header = () => {
-  console.log('header');
   const { changeTheme, currentTheme } = useContext(ThemesContext);
+  const history = useHistory();
+
   return (
     <MyHeader>
       <Nav>
-        <H1>Where in the word?</H1>
+        <H1 onClick={() => history.push('/')}>Where in the word?</H1>
         <Button onClick={changeTheme}>
           <i className={!currentTheme ? 'far fa-moon' : 'far fa-sun'}></i>
           {!currentTheme ? ' Dark' : ' Light'} Mode

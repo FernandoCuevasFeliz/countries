@@ -9,7 +9,6 @@ const useTheme = () => {
   const [theme, setTheme] = useState(!labelTheme ? light : dark);
 
   useEffect(() => {
-    console.log('hook');
     if (labelTheme === 'dark') setTheme(dark);
     else setTheme(light);
   }, [labelTheme]);

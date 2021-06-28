@@ -17,11 +17,11 @@ const Div = styled.div`
   }
 `;
 
-const Search = () => {
+const Search = ({ skip, setSkip }) => {
   return (
     <Div>
       <Input />
-      <Select />
+      <Select setSkip={setSkip} />
     </Div>
   );
 };

@@ -7,7 +7,6 @@ import IndexRoutes from './routes/IndexRoutes';
 import CountryProvider from './context/Country/CountryProvider';
 
 function App() {
-  console.log('app');
   const { theme } = useContext(ThemesContext);
 
   return (
