@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext } from 'react';
+import { ThemeProvider } from 'styled-components';
+
+import GlobalStyles from './styles/GlobalStyles';
+import ThemesContext from './context/Themes/ThemesContext';
+import IndexRoutes from './routes/IndexRoutes';
+import CountryProvider from './context/Country/CountryProvider';
 
 function App() {
+  console.log('app');
+  const { theme } = useContext(ThemesContext);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CountryProvider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <IndexRoutes />
+        </ThemeProvider>
+      </CountryProvider>
     </div>
   );
 }
