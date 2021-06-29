@@ -9,11 +9,11 @@ import NotfoundPage from '../orgnanisms/NotfoundPage';
 const Div = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* grid-template-rows: repeat(object-fit, 1fr); */
   grid-gap: 15px;
 
-  @media screen and (min-width: 460px) {
+  /* @media screen and (min-width: 460px) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(6, 1fr);
   }
@@ -26,7 +26,7 @@ const Div = styled.div`
   @media screen and (min-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
-  }
+  } */
 `;
 
 const ListCountries = ({ skip, setSkip }) => {
